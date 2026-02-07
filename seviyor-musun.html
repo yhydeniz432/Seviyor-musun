@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Soru</title>
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: Arial, Helvetica, sans-serif;
+    }
+
+    body {
+        height: 100vh;
+        background: #ffe6f0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+        touch-action: manipulation;
+    }
+
+    .container {
+        text-align: center;
+        width: 100%;
+        height: 100%;
+        position: relative;
+    }
+
+    h1 {
+        margin-top: 80px;
+        font-size: 28px;
+        color: #d63384;
+    }
+
+    .buttons {
+        margin-top: 60px;
+        position: relative;
+        height: 300px;
+    }
+
+    button {
+        position: absolute;
+        padding: 15px 25px;
+        font-size: 18px;
+        border: none;
+        border-radius: 12px;
+        cursor: pointer;
+    }
+
+    #yesBtn {
+        background: #ff4da6;
+        color: white;
+        left: 50%;
+        transform: translateX(-50%);
+        transition: all 0.3s ease;
+    }
+
+    #noBtn {
+        background: #999;
+        color: white;
+        left: 50%;
+        top: 80px;
+        transform: translateX(-50%);
+        transition: all 0.2s ease;
+    }
+
+    .final {
+        display: none;
+        width: 100%;
+        height: 100%;
+        background: #ffd6e8;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .final h2 {
+        color: #ff2f92;
+        font-size: 28px;
+        margin-top: 20px;
+    }
+
+    .rose {
+        font-size: 80px;
+    }
+</style>
+</head>
+
+<body>
+
+<div class="container" id="questionScreen">
+    <h1>Beni seviyor musun?</h1>
+
+    <div class="buttons">
+        <button id="yesBtn">Evet</button>
+        <button id="noBtn">Hayır</button>
+    </div>
+</div>
+
+<div class="final" id="finalScreen">
+    <div class="rose">🌹</div>
+    <h2>BEN DE SENİ ÇOK SEVİYORUM AŞKIMMMMM💗</h2>
+</div>
+
+<script>
+    const yesBtn = document.getElementById("yesBtn");
+    const noBtn = document.getElementById("noBtn");
+    const finalScreen = document.getElementById("finalScreen");
+    const questionScreen = document.getElementById("questionScreen");
+
+    let growCount = 0;
+    let confessed = false;
+
+    function moveNoButton() {
+        const x = Math.random() * (window.innerWidth - 120);
+        const y = Math.random() * (window.innerHeight - 200);
+        noBtn.style.left = x + "px";
+        noBtn.style.top = y + "px";
+    }
+
+    noBtn.addEventListener("click", () => {
+        if (!confessed) {
+            noBtn.textContent = "itiraf et🫰🏿";
+            confessed = true;
+        }
+
+        if (growCount < 11) {
+            growCount++;
+            const scale = 1 + growCount * 0.15;
+            yesBtn.style.transform = `translateX(-50%) scale(${scale})`;
+            moveNoButton();
+        } else {
+            noBtn.style.display = "none";
+            yesBtn.style.position = "fixed";
+            yesBtn.style.top = "0";
+            yesBtn.style.left = "0";
+            yesBtn.style.width = "100vw";
+            yesBtn.style.height = "100vh";
+            yesBtn.style.fontSize = "40px";
+            yesBtn.textContent = "EVET 💗";
+        }
+    });
+
+    yesBtn.addEventListener("click", () => {
+        questionScreen.style.display = "none";
+        finalScreen.style.display = "flex";
+    });
+
+    // Geri çıkmayı zorlaştırır (Android)
+    history.pushState(null, null, location.href);
+    window.onpopstate = function () {
+        history.go(1);
+    };
+</script>
+
+</body>
+</html>
